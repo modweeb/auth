@@ -1,0 +1,38 @@
+---
+const pageTitle = "حسابي";
+---
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>{pageTitle}</title>
+</head>
+<body>
+  <h1>صفحة الحساب</h1>
+  <div id="userInfo">
+    <p>مرحباً بك، <span id="userNameDisplay"></span>!</p>
+  </div>
+  <button id="logoutBtn">تسجيل الخروج</button>
+
+  <script>
+    // ضع هنا شيفرة الجافاسكربت التي تتفاعل مع حالة المستخدم
+    // وتظهر معلوماته من localStorage
+    const userName = localStorage.getItem('userName');
+    const userNameDisplay = document.getElementById('userNameDisplay');
+    const logoutBtn = document.getElementById('logoutBtn');
+    
+    if (userName) {
+      userNameDisplay.textContent = userName;
+    } else {
+      // إعادة التوجيه إذا لم يكن المستخدم مسجلاً
+      window.location.href = '/login';
+    }
+
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('userLoggedIn');
+      localStorage.removeItem('userName');
+      window.location.href = '/'; // العودة للصفحة الرئيسية
+    });
+  </script>
+</body>
+</html>
