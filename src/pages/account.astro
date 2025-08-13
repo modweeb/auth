@@ -1,38 +1,101 @@
 ---
-const pageTitle = "حسابي";
+// يتم هنا تعريف أي متغيرات أو جافاسكربت يمكن استخدامها في الصفحة
+const pageTitle = "صفحة الحساب";
 ---
 <!DOCTYPE html>
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{pageTitle}</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .account-container {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    .user-info {
+      text-align: right;
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+    .user-info p {
+      margin: 10px 0;
+    }
+    .user-info strong {
+      color: #007bff;
+    }
+    #logoutBtn {
+      width: 100%;
+      padding: 10px;
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+    #logoutBtn:hover {
+      background-color: #c82333;
+    }
+  </style>
 </head>
 <body>
-  <h1>صفحة الحساب</h1>
-  <div id="userInfo">
-    <p>مرحباً بك، <span id="userNameDisplay"></span>!</p>
+  <div class="account-container">
+    <h1>صفحة الحساب</h1>
+    <div id="userInfo" class="user-info">
+      </div>
+    <button id="logoutBtn">تسجيل الخروج</button>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const userInfoDiv = document.getElementById('userInfo');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // التحقق مما إذا كان المستخدم مسجلاً للدخول
+        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+
+        if (isLoggedIn) {
+          const userName = localStorage.getItem('userName');
+          const userEmail = localStorage.getItem('userEmail');
+
+          userInfoDiv.innerHTML = `
+            <p>مرحباً بك، <strong>${userName}</strong>!</p>
+            <p>بريدك الإلكتروني: <strong>${userEmail}</strong></p>
+          `;
+        } else {
+          // إذا لم يكن مسجلاً للدخول، يتم إعادة التوجيه إلى صفحة تسجيل الدخول
+          window.location.href = '/login';
+        }
+
+        // معالج حدث لزر تسجيل الخروج
+        logoutBtn.addEventListener('click', () => {
+          localStorage.removeItem('userLoggedIn');
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userEmail');
+          
+          // إعادة التوجيه إلى الصفحة الرئيسية بعد تسجيل الخروج
+          window.location.href = '/'; 
+        });
+      });
+    </script>
   </div>
-  <button id="logoutBtn">تسجيل الخروج</button>
-
-  <script>
-    // ضع هنا شيفرة الجافاسكربت التي تتفاعل مع حالة المستخدم
-    // وتظهر معلوماته من localStorage
-    const userName = localStorage.getItem('userName');
-    const userNameDisplay = document.getElementById('userNameDisplay');
-    const logoutBtn = document.getElementById('logoutBtn');
-    
-    if (userName) {
-      userNameDisplay.textContent = userName;
-    } else {
-      // إعادة التوجيه إذا لم يكن المستخدم مسجلاً
-      window.location.href = '/login';
-    }
-
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('userLoggedIn');
-      localStorage.removeItem('userName');
-      window.location.href = '/'; // العودة للصفحة الرئيسية
-    });
-  </script>
 </body>
 </html>
