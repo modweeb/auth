@@ -62,14 +62,19 @@
         .link:hover {
             color: #111827;
         }
-        /* إضافة تنسيق CSS إضافي لضبط حجم زر جوجل */
+        /* التعديلات الجديدة هنا */
         .g_id_signin {
-            display: flex; /* يجعل الحاوية مرنة */
-            justify-content: center; /* يضع الزر في منتصف الحاوية */
-            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            width: 100% !important;
         }
         .g_id_signin > div {
-            width: 100% !important; /* يجعل الزر يملأ الحاوية */
+            margin: 0 auto !important;
+            width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
         }
     </style>
 </head>
@@ -84,13 +89,13 @@
                 />
                 Modweeb Design
             </div>
-
+            
             <div class="card w-full max-w-sm mx-auto">
                 <div class="space-y-0.2 text-center p-6 pb-0">
                     <h1 class="text-0.5xl font-bold text-neutral-900">مرحبا بعودتك</h1>
                     <p class="text-neutral-500">تسجيل الدخول باستخدام حسابك الاجتماعي</p>
                 </div>
-
+                
                 <div class="p-6 pt-4">
                     <div class="grid gap-4">
                         <div id="g_id_onload"
@@ -100,16 +105,15 @@
                             data-callback="handleCredentialResponse"
                             data-auto_prompt="false">
                         </div>
-                        <div class="g_id_signin">
-                            <div class="g_id_signin"
-                                data-type="standard"
-                                data-shape="rectangular"
-                                data-theme="outline"
-                                data-text="signin_with"
-                                data-size="large"
-                                data-logo_alignment="left">
-                            </div>
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left">
                         </div>
+                        
                         <div class="flex gap-2">
                             <a href="https://t.me/modweeb" target="_blank" rel="noopener noreferrer" class="button button-black flex-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-send">
@@ -130,7 +134,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <p class="px-12 text-center text-sm text-neutral-500">
                 بالنقر على متابعة، فإنك توافق على
                 <a href="https://www.modweeb.com/p/terms.html" class="link">
@@ -144,7 +148,7 @@
             </p>
         </div>
     </div>
-
+    
     <script>
         function parseJwt(token) {
             try {
@@ -165,7 +169,6 @@
             
             if (responsePayload && window.opener) {
                 // إرسال البيانات إلى النافذة الأصلية (مدونة بلوجر)
-                // تأكد من أن 'https://mdwnplus.blogspot.com' هو النطاق الذي تفتح منه النافذة المنبثقة
                 window.opener.postMessage({
                     type: 'loginSuccess',
                     user: {
