@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة تسجيل الدخول - Modweeb Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .google-icon {
+            width: 16px;
+            height: 16px;
+            margin-left: 8px;
+        }
+        .logo-image {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            padding: 8px 16px;
+        }
+        .button-outline {
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+        .button-outline:hover {
+            background: #f9fafb;
+        }
+        .button-black {
+            background: #000000;
+            color: white;
+        }
+        .button-black:hover {
+            background: #262626;
+        }
+        .link {
+            color: #6b7280;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+        .link:hover {
+            color: #111827;
+        }
+    </style>
+</head>
+<body class="bg-neutral-50 min-h-screen">
+    <div class="flex min-h-screen items-center justify-center px-4 py-12">
+        <div class="mx-auto w-full max-w-md space-y-6 text-center">
+            <div class="flex items-center justify-center gap-2 text-sm font-semibold text-neutral-700 -mt-4">
+                <img 
+                    src="https://i.postimg.cc/v8xt8V5n/web-app-manifest-512x512.png" 
+                    alt="Modweeb Design logo" 
+                    class="logo-image"
+                />
+                Modweeb Design
+            </div>
+
+            <div class="card w-full max-w-sm mx-auto">
+                <div class="space-y-0.2 text-center p-6 pb-0">
+                    <h1 class="text-0.5xl font-bold text-neutral-900">مرحبا بعودتك</h1>
+                    <p class="text-neutral-500">تسجيل الدخول باستخدام حسابك الاجتماعي</p>
+                </div>
+
+                <div class="p-6 pt-4">
+                    <div class="grid gap-4">
+                        <div id="g_id_onload"
+                            data-client_id="36053852280-tbftp3smmoaq0g14homp75pie0h6jcng.apps.googleusercontent.com"
+                            data-context="signin"
+                            data-ux_mode="popup"
+                            data-callback="handleCredentialResponse"
+                            data-auto_prompt="false">
+                        </div>
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left"
+                            style="width: 100%; border-radius: 6px; overflow: hidden;">
+                        </div>
+
+                        <div class="flex gap-2">
+                            <a href="https://t.me/modweeb" target="_blank" rel="noopener noreferrer" class="button button-black flex-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-send">
+                                    <path d="M22 2L11 13"/>
+                                    <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+                                </svg>
+                                تابعنا تيليجرام
+                            </a>
+                            <a href="https://www.blogger.com/followers/follow/2986788159829882847" target="_blank" rel="noopener noreferrer" class="button button-black flex-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-rss">
+                                    <path d="M4 11a9 9 0 0 1 9 9"/>
+                                    <path d="M4 4a16 16 0 0 1 16 16"/>
+                                    <circle cx="5" cy="19" r="1"/>
+                                </svg>
+                                تابع المدونة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="px-12 text-center text-sm text-neutral-500">
+                بالنقر على متابعة، فإنك توافق على
+                <a href="https://www.modweeb.com/p/terms.html" class="link">
+                    شروط الخدمة
+                </a>
+                و
+                <a href="https://www.modweeb.com/p/privacy-policy.html" class="link">
+                    سياسة الخصوصية
+                </a>
+                .
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function parseJwt(token) {
+            try {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                console.error("Failed to parse JWT", e);
+                return null;
+            }
+        }
+        
+        function handleCredentialResponse(response) {
+            const responsePayload = parseJwt(response.credential);
+            
+            if (responsePayload && window.opener) {
+                // إرسال البيانات إلى النافذة الأصلية (مدونة بلوجر)
+                // تأكد من أن 'https://mdwnplus.blogspot.com' هو النطاق الذي تفتح منه النافذة المنبثقة
+                window.opener.postMessage({
+                    type: 'loginSuccess',
+                    user: {
+                        name: responsePayload.name,
+                        image: responsePayload.picture
+                    }
+                }, 'https://mdwnplus.blogspot.com');
+                
+                // يمكنك أيضًا تخزين البيانات في localStorage للوصول إليها مباشرة في النافذة المنبثقة إذا كانت هناك حاجة لذلك
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userName', responsePayload.name);
+                localStorage.setItem('userPicture', responsePayload.picture);
+                
+                // إغلاق النافذة المنبثقة بعد إرسال الرسالة
+                window.close();
+            } else {
+                console.error("فشل في استلام بيانات المستخدم أو النافذة الأصلية غير موجودة.");
+            }
+        }
+    </script>
+</body>
+</html>
