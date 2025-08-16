@@ -179,22 +179,23 @@
             const source = params.get('source');
             const redirectTo = params.get('redirect_to');
 
-            if (redirectTo === 'account.html') {
+            if (redirectTo === 'account') {
                 // المستخدم قادم من صفحة الحساب، أعده إليها
-                // تم تعديل الرابط هنا
                 window.location.href = 'https://modweeb.com/account';
-            } else if (source === 'blog') {
-                // المستخدم قادم من المدونة، أرسل رسالة للنافذة الأم وأغلق النافذة المنبثقة
-                if (window.opener) {
-                    window.opener.postMessage({
-                        type: 'loginSuccess',
-                        user: {
-                            name: responsePayload.name,
-                            image: responsePayload.picture,
-                            email: responsePayload.email
-                        }
-                    }, 'https://mdwnplus.blogspot.com');
-                }
+            } else if (window.opener) {
+                // المستخدم قادم من أي صفحة أخرى (سواء المدونة التجريبية أو الأصلية)
+                // هنا نرسل الرسالة إلى النطاق الذي فتح النافذة
+                const openerOrigin = window.opener.location.origin;
+
+                window.opener.postMessage({
+                    type: 'loginSuccess',
+                    user: {
+                        name: responsePayload.name,
+                        image: responsePayload.picture,
+                        email: responsePayload.email
+                    }
+                }, openerOrigin);
+                
                 window.close();
             } else {
                 // حالة احتياطية، أغلق النافذة المنبثقة
