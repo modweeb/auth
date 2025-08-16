@@ -169,7 +169,7 @@ margin-bottom: 12px;
         const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
         if (!isLoggedIn) {
             // إذا لم يكن المستخدم مسجلاً دخوله، أعد توجيهه إلى صفحة تسجيل الدخول
-            window.location.href = 'https://modweeb.github.io/auth-login/login.html';
+            window.location.href = 'https://modweeb.com/login';
         }
 
         // --- الدوال المخصصة للتنبيهات المنبثقة ---
@@ -240,7 +240,7 @@ margin-bottom: 12px;
             if (confirmLogout) {
                 localStorage.clear();
                 // إعادة التوجيه مع محدد `redirect_to`
-                window.location.href = 'https://modweeb.github.io/auth-login/login.html?redirect_to=account.html';
+                window.location.href = 'https://modweeb.com/login?redirect_to=account';
             }
         }
 
