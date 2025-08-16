@@ -95,57 +95,8 @@
                 Modweeb Design
             </div>
             
-            <div class="card w-full p-6">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="text-right">
-                        <h2 id="user-name-display" class="text-xl font-bold text-neutral-900">اسم المستخدم</h2>
-                        <p class="text-neutral-500 text-sm">مرحباً بعودتك!</p>
-                    </div>
-                    <img id="user-picture" src="https://i.postimg.cc/Xp7b6fPj/user-placeholder.png" alt="User Profile" class="profile-image">
+            <div id="account-content" class="card w-full p-6">
                 </div>
-
-                <div class="mt-4 space-y-2 text-sm text-neutral-700 text-right">
-                    <div class="section-title">معلومات الحساب</div>
-                    <div class="info-row">
-                        <span class="text-neutral-500">البريد الإلكتروني:</span>
-                        <span id="email-info" class="font-medium text-neutral-900">لا يوجد بيانات</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="text-neutral-500">تاريخ الانضمام:</span>
-                        <span id="join-date-info" class="font-medium text-neutral-900">غير متوفر</span>
-                    </div>
-                </div>
-
-                <div class="mt-8 grid gap-4">
-                    <a href="#" id="edit-profile-button" class="button button-outline w-full justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-edit">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                        تعديل الملف الشخصي
-                    </a>
-                    <a href="#" id="manage-settings-button" class="button button-outline w-full justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-settings">
-                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.39a2 2 0 0 0 .73 2.73l.15.08a2 2 0 0 1 1 1.74v.44a2 2 0 0 1-1 1.74l-.15.08a2 2 0 0 0-.73 2.73l.22.39a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73v.18a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.44a2 2 0 0 1 1-1.74l.15-.08a2 2 0 0 0 .73-2.73l-.22-.39a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        إدارة الإعدادات
-                    </a>
-                    
-                    <div class="flex gap-4">
-                        <a href="https://mdwnplus.blogspot.com/" class="button button-outline flex-1 justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-home">
-                                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
-                            الرئيسية
-                        </a>
-                        <button id="logout-button" class="button button-black flex-1 justify-center">
-                            تسجيل الخروج
-                        </button>
-                    </div>
-                </div>
-            </div>
             
             <p class="px-12 text-center text-sm text-neutral-500">
                 بالنقر على متابعة، فإنك توافق على
@@ -166,98 +117,152 @@
             <h3 id="modal-title" class="text-lg font-bold text-neutral-900 mb-4"></h3>
             <p id="modal-message" class="text-sm text-neutral-600 mb-6"></p>
             <div id="modal-buttons" class="flex gap-4">
-                </div>
+            </div>
         </div>
     </div>
     
     <script>
-    // --- الدوال المخصصة للتنبيهات المنبثقة ---
-    function showCustomAlert(message, title = 'تنبيه') {
-        return new Promise(resolve => {
-            const modal = document.getElementById('custom-modal-backdrop');
-            const modalTitle = document.getElementById('modal-title');
-            const modalMessage = document.getElementById('modal-message');
-            const modalButtons = document.getElementById('modal-buttons');
-
-            modalTitle.textContent = title;
-            modalMessage.textContent = message;
-            modalButtons.innerHTML = `<button class="button button-black flex-1" onclick="closeCustomModal(true)">حسنًا</button>`;
-            
-            modal.style.display = 'flex';
-            window.closeCustomModal = function(result) {
-                modal.style.display = 'none';
-                resolve(result);
-            };
-        });
-    }
-
-    function showCustomConfirm(message, title = 'تأكيد') {
-        return new Promise(resolve => {
-            const modal = document.getElementById('custom-modal-backdrop');
-            const modalTitle = document.getElementById('modal-title');
-            const modalMessage = document.getElementById('modal-message');
-            const modalButtons = document.getElementById('modal-buttons');
-
-            modalTitle.textContent = title;
-            modalMessage.textContent = message;
-            modalButtons.innerHTML = `
-                <button class="button button-outline flex-1" onclick="closeCustomModal(false)">إلغاء</button>
-                <button class="button button-black flex-1" onclick="closeCustomModal(true)">تأكيد</button>
-            `;
-
-            modal.style.display = 'flex';
-            window.closeCustomModal = function(result) {
-                modal.style.display = 'none';
-                resolve(result);
-            };
-        });
-    }
-
-    // --- الدوال الأساسية للموقع ---
-    function updateUserInfo() {
-        const userName = localStorage.getItem('userName');
-        const userPicture = localStorage.getItem('userPicture');
-        const userEmail = localStorage.getItem('userEmail');
-        const userJoinDate = localStorage.getItem('userJoinDate') || 'غير متوفر';
-
-        if (userName) {
-            document.getElementById('user-name-display').textContent = userName;
-            document.getElementById('email-info').textContent = userEmail || 'غير متوفر';
-            document.getElementById('join-date-info').textContent = userJoinDate;
+        // --- الدوال المخصصة للتنبيهات المنبثقة ---
+        function showCustomAlert(message, title = 'تنبيه') {
+            return new Promise(resolve => {
+                const modal = document.getElementById('custom-modal-backdrop');
+                const modalTitle = document.getElementById('modal-title');
+                const modalMessage = document.getElementById('modal-message');
+                const modalButtons = document.getElementById('modal-buttons');
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                modalButtons.innerHTML = `<button class="button button-black flex-1" onclick="closeCustomModal(true)">حسنًا</button>`;
+                modal.style.display = 'flex';
+                window.closeCustomModal = function(result) {
+                    modal.style.display = 'none';
+                    resolve(result);
+                };
+            });
         }
-        if (userPicture) {
-            document.getElementById('user-picture').src = userPicture;
+
+        function showCustomConfirm(message, title = 'تأكيد') {
+            return new Promise(resolve => {
+                const modal = document.getElementById('custom-modal-backdrop');
+                const modalTitle = document.getElementById('modal-title');
+                const modalMessage = document.getElementById('modal-message');
+                const modalButtons = document.getElementById('modal-buttons');
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                modalButtons.innerHTML = `
+                    <button class="button button-outline flex-1" onclick="closeCustomModal(false)">إلغاء</button>
+                    <button class="button button-black flex-1" onclick="closeCustomModal(true)">تأكيد</button>
+                `;
+                modal.style.display = 'flex';
+                window.closeCustomModal = function(result) {
+                    modal.style.display = 'none';
+                    resolve(result);
+                };
+            });
         }
-    }
+        
+        // --- الدوال الأساسية للموقع ---
+        function renderAccountPage() {
+            const userName = localStorage.getItem('userName');
+            const userPicture = localStorage.getItem('userPicture');
+            const userEmail = localStorage.getItem('userEmail');
+            const userJoinDate = localStorage.getItem('userJoinDate');
+            const accountContent = document.getElementById('account-content');
 
-    async function handleAccountAction(action) {
-        await showCustomAlert(`تم النقر على زر: ${action}\nسيتم تنفيذ هذه الوظيفة لاحقًا.`, 'إجراء');
-    }
+            if (userName && userPicture) {
+                // المستخدم مسجل دخوله
+                accountContent.innerHTML = `
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="text-right">
+                            <h2 id="user-name-display" class="text-xl font-bold text-neutral-900">${userName}</h2>
+                            <p class="text-neutral-500 text-sm">مرحباً بعودتك!</p>
+                        </div>
+                        <img id="user-picture" src="${userPicture}" alt="User Profile" class="profile-image">
+                    </div>
 
-    async function handleLogout() {
-        const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
-        if (confirmLogout) {
-            localStorage.clear();
+                    <div class="mt-4 space-y-2 text-sm text-neutral-700 text-right">
+                        <div class="section-title">معلومات الحساب</div>
+                        <div class="info-row">
+                            <span class="text-neutral-500">البريد الإلكتروني:</span>
+                            <span id="email-info" class="font-medium text-neutral-900">${userEmail || 'لا يوجد بيانات'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="text-neutral-500">تاريخ الانضمام:</span>
+                            <span id="join-date-info" class="font-medium text-neutral-900">${userJoinDate || 'غير متوفر'}</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 grid gap-4">
+                        <a href="#" id="edit-profile-button" class="button button-outline w-full justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-edit">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            تعديل الملف الشخصي
+                        </a>
+                        <a href="#" id="manage-settings-button" class="button button-outline w-full justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-settings">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.39a2 2 0 0 0 .73 2.73l.15.08a2 2 0 0 1 1 1.74v.44a2 2 0 0 1-1 1.74l-.15.08a2 2 0 0 0-.73 2.73l.22.39a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73v.18a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.44a2 2 0 0 1 1-1.74l.15-.08a2 2 0 0 0 .73-2.73l-.22-.39a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            إدارة الإعدادات
+                        </a>
+                        
+                        <div class="flex gap-4">
+                            <a href="https://mdwnplus.blogspot.com/" class="button button-outline flex-1 justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-home">
+                                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                الرئيسية
+                            </a>
+                            <button id="logout-button" class="button button-black flex-1 justify-center">
+                                تسجيل الخروج
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // إضافة مستمعي الأحداث بعد إنشاء العناصر
+                document.getElementById('edit-profile-button').addEventListener('click', () => handleAccountAction('تعديل الملف الشخصي'));
+                document.getElementById('manage-settings-button').addEventListener('click', () => handleAccountAction('إدارة الإعدادات'));
+                document.getElementById('logout-button').addEventListener('click', handleLogout);
             
-            // إرسال رسالة إلى النافذة الأصلية (مدونة بلوجر) لإعلامها بتسجيل الخروج
-            if (window.opener) {
-                window.opener.postMessage({
-                    type: 'logoutSuccess'
-                }, 'https://mdwnplus.blogspot.com');
+            } else {
+                // المستخدم غير مسجل دخوله
+                accountContent.innerHTML = `
+                    <div class="text-center space-y-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-neutral-500">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <h3 class="text-xl font-bold text-neutral-900">حساب غير موجود</h3>
+                        <p class="text-neutral-500 text-sm">يجب عليك تسجيل الدخول أولًا لعرض هذه الصفحة.</p>
+                        <a href="https://modweeb.github.io/auth-login/login.html" class="button button-black w-full justify-center">
+                            تسجيل الدخول
+                        </a>
+                    </div>
+                `;
             }
-            
-            // إغلاق النافذة المنبثقة أو إعادة التوجيه
-            window.location.href = 'https://mdwnplus.blogspot.com/';
         }
-    }
+        
+        async function handleAccountAction(action) {
+            await showCustomAlert(`تم النقر على زر: ${action}\nسيتم تنفيذ هذه الوظيفة لاحقًا.`, 'إجراء');
+        }
 
-    // --- إضافة مستمعي الأحداث للأزرار ---
-    document.getElementById('edit-profile-button').addEventListener('click', () => handleAccountAction('تعديل الملف الشخصي'));
-    document.getElementById('manage-settings-button').addEventListener('click', () => handleAccountAction('إدارة الإعدادات'));
-    document.getElementById('logout-button').addEventListener('click', handleLogout);
+        async function handleLogout() {
+            const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
+            if (confirmLogout) {
+                if (window.opener) {
+                    window.opener.postMessage({ type: 'logoutSuccess' }, 'https://mdwnplus.blogspot.com');
+                }
+                localStorage.clear();
+                window.location.href = 'https://mdwnplus.blogspot.com/';
+            }
+        }
 
-    // --- تحديث المعلومات عند تحميل الصفحة ---
-    window.onload = updateUserInfo;
-</script>
+        // --- عند تحميل الصفحة ---
+        document.addEventListener('DOMContentLoaded', renderAccountPage);
+        window.addEventListener('storage', renderAccountPage);
+    </script>
 </body>
 </html>
