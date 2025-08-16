@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الحساب - Modweeb Design</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-neutral-50 min-h-screen">
+    <div class="flex min-h-screen items-center justify-center px-4 py-8">
+        <div class="mx-auto w-full max-w-md space-y-4 text-center">
+            <div class="flex items-center justify-center gap-2 text-sm font-semibold text-neutral-700">
+                <img 
+                    src="https://i.postimg.cc/v8xt8V5n/web-app-manifest-512x512.png" 
+                    alt="Modweeb Design logo" 
+                    class="logo-image"
+                />
+                <span class="text-sm">Modweeb Design</span>
+            </div>
+            
+            <div class="card mx-auto">
+                <div class="flex items-center gap-3 border-b border-neutral-200 pb-3 mb-3">
+                    <img id="user-picture" src="https://i.postimg.cc/Xp7b6fPj/user-placeholder.png" alt="User Profile" class="profile-image">
+                    <div class="text-right flex-1">
+                        <h2 id="user-name-display" class="text-lg font-bold text-neutral-900">اسم المستخدم</h2>
+                        <p class="text-neutral-500 text-xs">مرحباً بعودتك!</p>
+                    </div>
+                </div>
+
+                <div class="space-y-1 text-xs text-neutral-700 text-right">
+                    <div class="section-title">معلومات الحساب</div>
+                    <div class="info-row">
+                        <span class="text-neutral-500">البريد الإلكتروني:</span>
+                        <span id="email-info" class="font-medium text-neutral-900">لا يوجد بيانات</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="text-neutral-500">تاريخ الانضمام:</span>
+                        <span id="join-date-info" class="font-medium text-neutral-900">غير متوفر</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid gap-2">
+                    <div class="section-title">خيارات أخرى</div>
+                    <div class="flex gap-2">
+                        <a href="https://mdwnplus.blogspot.com/" class="button button-outline flex-1 justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-home">
+                                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            الرئيسية
+                        </a>
+                        <button id="logout-button" class="button button-black flex-1 justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-log-out">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" x2="9" y1="12" y2="12"></line>
+                            </svg>
+                            تسجيل الخروج
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="px-4 text-center text-xs text-neutral-500">
+                بالنقر على متابعة، فإنك توافق على
+                <a href="https://www.modweeb.com/p/terms.html" class="link">
+                    شروط الخدمة
+                </a>
+                و
+                <a href="https://www.modweeb.com/p/privacy-policy.html" class="link">
+                    سياسة الخصوصية
+                </a>
+                .
+            </p>
+        </div>
+    </div>
+    
+    <div id="custom-modal-backdrop" class="fixed inset-0 z-50 hidden bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
+        <div id="custom-modal-card" class="card w-full max-w-xs mx-auto text-center p-6">
+            <h3 id="modal-title" class="text-lg font-bold text-neutral-900 mb-4"></h3>
+            <p id="modal-message" class="text-sm text-neutral-600 mb-6"></p>
+            <div id="modal-buttons" class="flex gap-4">
+                </div>
+        </div>
+    </div>
+    
+    <script src="../assets/js/script.js"></script>
+</body>
+</html>
