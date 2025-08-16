@@ -250,15 +250,21 @@
         }
 
                 async function handleLogout() {
-            const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
-            if (confirmLogout) {
-                // مسح البيانات من localStorage
-                localStorage.clear();
-                
-                // إعادة التوجيه إلى المدونة.
-                window.location.href = 'https://mdwnplus.blogspot.com/';
-            }
+    const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
+    if (confirmLogout) {
+        // مسح البيانات من localStorage
+        localStorage.clear();
+
+        // إرسال رسالة إلى النافذة الأصلية (صفحة المدونة)
+        if (window.opener) {
+            window.opener.postMessage({ type: 'logoutSuccess' }, 'https://mdwnplus.blogspot.com');
         }
+
+        // إعادة التوجيه إلى المدونة.
+        window.location.href = 'https://mdwnplus.blogspot.com/';
+    }
+}
+
 
         // --- عند تحميل الصفحة ---
         document.addEventListener('DOMContentLoaded', renderAccountPage);
