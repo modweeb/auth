@@ -1,11 +1,6 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.google-icon {
-    width: 16px;
-    height: 16px;
-    margin-left: 8px;
-}
 .logo-image {
     width: 20px;
     height: 20px;
@@ -14,15 +9,17 @@ body {
 .card {
     background: white;
     border-radius: 20px;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border: 1px solid #e5e7eb;
+    padding: 1rem;
+    width: 320px;
 }
 .button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    font-size: 12px;
+    border-radius: 8px;
+    font-size: 13px;
     font-weight: 500;
     transition: all 0.2s;
     cursor: pointer;
@@ -49,9 +46,42 @@ body {
     color: #6b7280;
     text-decoration: underline;
     text-underline-offset: 4px;
+    font-size: 12px;
 }
 .link:hover {
     color: #111827;
+}
+.profile-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+}
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+.info-row:last-child {
+    border-bottom: none;
+}
+.section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1f2937;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+}
+
+/* أكواد تسجيل الدخول المضافة */
+.google-icon {
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
 }
 .g_id_signin {
     display: flex;
@@ -66,4 +96,3 @@ body {
     display: flex !important;
     justify-content: center !important;
 }
-
