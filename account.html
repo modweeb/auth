@@ -117,14 +117,14 @@
                 </div>
 
                 <div class="mt-8 grid gap-4">
-                    <a href="#" id="edit-profile-button" class="button button-outline w-full justify-center">
+                    <a href="#" class="button button-outline w-full justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-edit">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                         تعديل الملف الشخصي
                     </a>
-                    <a href="#" id="manage-settings-button" class="button button-outline w-full justify-center">
+                    <a href="#" class="button button-outline w-full justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-settings">
                             <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.39a2 2 0 0 0 .73 2.73l.15.08a2 2 0 0 1 1 1.74v.44a2 2 0 0 1-1 1.74l-.15.08a2 2 0 0 0-.73 2.73l.22.39a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73v.18a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.44a2 2 0 0 1 1-1.74l.15-.08a2 2 0 0 0 .73-2.73l-.22-.39a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
@@ -162,14 +162,55 @@
     </div>
     
     <script>
+    // --- الدوال المخصصة للتنبيهات المنبثقة ---
+    function showCustomAlert(message, title = 'تنبيه') {
+        return new Promise(resolve => {
+            const modal = document.getElementById('custom-modal-backdrop');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+            const modalButtons = document.getElementById('modal-buttons');
+
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modalButtons.innerHTML = `<button class="button button-black flex-1" onclick="closeCustomModal(true)">حسنًا</button>`;
+            
+            modal.style.display = 'flex';
+            window.closeCustomModal = function(result) {
+                modal.style.display = 'none';
+                resolve(result);
+            };
+        });
+    }
+
+    function showCustomConfirm(message, title = 'تأكيد') {
+        return new Promise(resolve => {
+            const modal = document.getElementById('custom-modal-backdrop');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+            const modalButtons = document.getElementById('modal-buttons');
+
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modalButtons.innerHTML = `
+                <button class="button button-outline flex-1" onclick="closeCustomModal(false)">إلغاء</button>
+                <button class="button button-black flex-1" onclick="closeCustomModal(true)">تأكيد</button>
+            `;
+
+            modal.style.display = 'flex';
+            window.closeCustomModal = function(result) {
+                modal.style.display = 'none';
+                resolve(result);
+            };
+        });
+    }
+
+    // --- الدوال الأساسية للموقع ---
     function updateUserInfo() {
-        // جلب البيانات من localStorage
         const userName = localStorage.getItem('userName');
         const userPicture = localStorage.getItem('userPicture');
         const userEmail = localStorage.getItem('userEmail');
         const userJoinDate = localStorage.getItem('userJoinDate') || 'غير متوفر';
 
-        // تحديث العناصر في الصفحة
         if (userName) {
             document.getElementById('user-name-display').textContent = userName;
             document.getElementById('email-info').textContent = userEmail || 'غير متوفر';
@@ -180,32 +221,35 @@
         }
     }
 
-    // وظيفة مؤقتة لأزرار إدارة الحساب
-    function handleAccountAction(action) {
-        alert(`تم النقر على زر: ${action}\nسيتم تنفيذ هذه الوظيفة لاحقًا.`);
-        // في مشروع حقيقي، هنا ستضيف الكود الفعلي لتوجيه المستخدم
-        // إلى صفحة تعديل الملف أو صفحة الإعدادات.
-        // مثال: window.location.href = '/settings';
+    async function handleAccountAction(action) {
+        await showCustomAlert(`تم النقر على زر: ${action}\nسيتم تنفيذ هذه الوظيفة لاحقًا.`, 'إجراء');
     }
 
-    function handleLogout() {
-        const confirmLogout = confirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
+    async function handleLogout() {
+        const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
         if (confirmLogout) {
-            // مسح كل البيانات المخزنة من localStorage
             localStorage.clear();
-            
-            // إعادة توجيه المستخدم إلى صفحة تسجيل الدخول
             window.location.href = 'https://modweeb.github.io/auth-login/login.html';
         }
     }
 
-    // إضافة مستمعي الأحداث
+    // --- إضافة مستمعي الأحداث للأزرار ---
     document.getElementById('edit-profile-button').addEventListener('click', () => handleAccountAction('تعديل الملف الشخصي'));
     document.getElementById('manage-settings-button').addEventListener('click', () => handleAccountAction('إدارة الإعدادات'));
     document.getElementById('logout-button').addEventListener('click', handleLogout);
 
-    // تحديث المعلومات عند تحميل الصفحة
+    // --- تحديث المعلومات عند تحميل الصفحة ---
     window.onload = updateUserInfo;
 </script>
+
+<div id="custom-modal-backdrop" class="fixed inset-0 z-50 hidden bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
+    <div id="custom-modal-card" class="card w-full max-w-xs mx-auto text-center p-6">
+        <h3 id="modal-title" class="text-lg font-bold text-neutral-900 mb-4"></h3>
+        <p id="modal-message" class="text-sm text-neutral-600 mb-6"></p>
+        <div id="modal-buttons" class="flex gap-4">
+            </div>
+    </div>
+</div>
+
 </body>
 </html>
