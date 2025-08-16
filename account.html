@@ -249,13 +249,13 @@
             await showCustomAlert(`تم النقر على زر: ${action}\nسيتم تنفيذ هذه الوظيفة لاحقًا.`, 'إجراء');
         }
 
-        async function handleLogout() {
+                async function handleLogout() {
             const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
             if (confirmLogout) {
-                if (window.opener) {
-                    window.opener.postMessage({ type: 'logoutSuccess' }, 'https://mdwnplus.blogspot.com');
-                }
+                // مسح البيانات من localStorage
                 localStorage.clear();
+                
+                // إعادة التوجيه إلى المدونة.
                 window.location.href = 'https://mdwnplus.blogspot.com/';
             }
         }
