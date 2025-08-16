@@ -4,7 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إدارة الحساب - Modweeb Design</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.logo-image {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+}
+.card {
+background: white;
+border-radius: 20px;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+border: 1px solid #e5e7eb;
+padding: 1rem;
+width: 320px;
+}
+.button {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+border-radius: 8px;
+font-size: 13px;
+font-weight: 500;
+transition: all 0.2s;
+cursor: pointer;
+text-decoration: none;
+border: none;
+padding: 8px 16px;
+}
+.button-outline {
+background: transparent;
+border: 1px solid #d1d5db;
+color: #374151;
+}
+.button-outline:hover {
+background: #f9fafb;
+}
+.button-black {
+background: #000000;
+color: white;
+}
+.button-black:hover {
+background: #262626;
+}
+.link {
+color: #6b7280;
+text-decoration: underline;
+text-underline-offset: 4px;
+font-size: 12px;
+}
+.link:hover {
+color: #111827;
+}
+.profile-image {
+width: 48px;
+height: 48px;
+border-radius: 50%;
+object-fit: cover;
+border: 2px solid #e5e7eb;
+}
+.info-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 8px 0;
+border-bottom: 1px solid #e5e7eb;
+}
+.info-row:last-child {
+border-bottom: none;
+}
+.section-title {
+font-size: 0.9rem;
+font-weight: 600;
+color: #1f2937;
+border-bottom: 2px solid #e5e7eb;
+padding-bottom: 6px;
+margin-bottom: 12px;
+}
+</style>
 </head>
 <body class="bg-neutral-50 min-h-screen">
     <div class="flex min-h-screen items-center justify-center px-4 py-8">
@@ -84,6 +164,91 @@
         </div>
     </div>
     
-    <script src="../assets/js/script.js"></script>
+    <script>
+        // --- التحقق من حالة تسجيل الدخول عند تحميل الصفحة ---
+        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+        if (!isLoggedIn) {
+            // إذا لم يكن المستخدم مسجلاً دخوله، أعد توجيهه إلى صفحة تسجيل الدخول
+            window.location.href = 'https://modweeb.github.io/auth-login/login.html';
+        }
+
+        // --- الدوال المخصصة للتنبيهات المنبثقة ---
+        function showCustomAlert(message, title = 'تنبيه') {
+            return new Promise(resolve => {
+                const modal = document.getElementById('custom-modal-backdrop');
+                const modalTitle = document.getElementById('modal-title');
+                const modalMessage = document.getElementById('modal-message');
+                const modalButtons = document.getElementById('modal-buttons');
+
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                modalButtons.innerHTML = `<button class="button button-black flex-1" onclick="closeCustomModal(true)">حسنًا</button>`;
+                
+                modal.style.display = 'flex';
+                window.closeCustomModal = function(result) {
+                    modal.style.display = 'none';
+                    resolve(result);
+                };
+            });
+        }
+
+        function showCustomConfirm(message, title = 'تأكيد') {
+            return new Promise(resolve => {
+                const modal = document.getElementById('custom-modal-backdrop');
+                const modalTitle = document.getElementById('modal-title');
+                const modalMessage = document.getElementById('modal-message');
+                const modalButtons = document.getElementById('modal-buttons');
+
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                modalButtons.innerHTML = `
+                    <button class="button button-outline flex-1" onclick="closeCustomModal(false)">إلغاء</button>
+                    <button class="button button-black flex-1" onclick="closeCustomModal(true)">تأكيد</button>
+                `;
+
+                modal.style.display = 'flex';
+                window.closeCustomModal = function(result) {
+                    modal.style.display = 'none';
+                    resolve(result);
+                };
+            });
+        }
+
+        // --- الدوال الأساسية للموقع ---
+        function updateUserInfo() {
+            const userName = localStorage.getItem('userName');
+            const userPicture = localStorage.getItem('userPicture');
+            const userEmail = localStorage.getItem('userEmail');
+            const userJoinDate = localStorage.getItem('userJoinDate') || 'غير متوفر';
+
+            if (userName) {
+                document.getElementById('user-name-display').textContent = userName;
+                document.getElementById('email-info').textContent = userEmail || 'غير متوفر';
+                document.getElementById('join-date-info').textContent = userJoinDate;
+            }
+            if (userPicture) {
+                document.getElementById('user-picture').src = userPicture;
+            }
+        }
+
+        async function handleAccountAction(action) {
+            await showCustomAlert(`تم النقر على زر: ${action}\nسيتم تنفيذ هذه الوظيفة لاحقًا.`, 'إجراء');
+        }
+
+        async function handleLogout() {
+            const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
+            if (confirmLogout) {
+                localStorage.clear();
+                // إعادة التوجيه مع محدد `redirect_to`
+                window.location.href = 'https://modweeb.github.io/auth-login/login.html?redirect_to=account.html';
+            }
+        }
+
+        // --- إضافة مستمعي الأحداث للأزرار ---
+        document.getElementById('logout-button').addEventListener('click', handleLogout);
+
+        // --- تحديث المعلومات عند تحميل الصفحة ---
+        window.onload = updateUserInfo;
+    </script>
 </body>
 </html>
