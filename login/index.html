@@ -179,13 +179,13 @@
             const source = params.get('source');
             const redirectTo = params.get('redirect_to');
 
-            if (redirectTo === 'account') {
+            if (redirectTo === 'account.html') {
                 // المستخدم قادم من صفحة الحساب، أعده إليها
+                // تم تعديل الرابط هنا
                 window.location.href = 'https://modweeb.com/account';
             } else if (source === 'blog') {
                 // المستخدم قادم من المدونة، أرسل رسالة للنافذة الأم وأغلق النافذة المنبثقة
                 if (window.opener) {
-                    // ** هنا يتم إرسال الرسالة إلى المدونة الثانية https://mdwnplus.blogspot.com **
                     window.opener.postMessage({
                         type: 'loginSuccess',
                         user: {
