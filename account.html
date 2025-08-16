@@ -162,38 +162,50 @@
     </div>
     
     <script>
-        function updateUserInfo() {
-            const userName = localStorage.getItem('userName');
-            const userPicture = localStorage.getItem('userPicture');
-            const userEmail = localStorage.getItem('userEmail');
-            const userJoinDate = localStorage.getItem('userJoinDate') || 'غير متوفر';
+    function updateUserInfo() {
+        // جلب البيانات من localStorage
+        const userName = localStorage.getItem('userName');
+        const userPicture = localStorage.getItem('userPicture');
+        const userEmail = localStorage.getItem('userEmail');
+        const userJoinDate = localStorage.getItem('userJoinDate') || 'غير متوفر';
+
+        // تحديث العناصر في الصفحة
+        if (userName) {
+            document.getElementById('user-name-display').textContent = userName;
+            document.getElementById('email-info').textContent = userEmail || 'غير متوفر';
+            document.getElementById('join-date-info').textContent = userJoinDate;
+        }
+        if (userPicture) {
+            document.getElementById('user-picture').src = userPicture;
+        }
+    }
+
+    // وظيفة مؤقتة لأزرار إدارة الحساب
+    function handleAccountAction(action) {
+        alert(`تم النقر على زر: ${action}\nسيتم تنفيذ هذه الوظيفة لاحقًا.`);
+        // في مشروع حقيقي، هنا ستضيف الكود الفعلي لتوجيه المستخدم
+        // إلى صفحة تعديل الملف أو صفحة الإعدادات.
+        // مثال: window.location.href = '/settings';
+    }
+
+    function handleLogout() {
+        const confirmLogout = confirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
+        if (confirmLogout) {
+            // مسح كل البيانات المخزنة من localStorage
+            localStorage.clear();
             
-            if (userName) {
-                document.getElementById('user-name-display').textContent = userName;
-                document.getElementById('email-info').textContent = userEmail || 'غير متوفر';
-                document.getElementById('join-date-info').textContent = userJoinDate;
-            }
-            if (userPicture) {
-                document.getElementById('user-picture').src = userPicture;
-            }
+            // إعادة توجيه المستخدم إلى صفحة تسجيل الدخول
+            window.location.href = 'https://modweeb.github.io/auth-login/login.html';
         }
+    }
 
-        function handleLogout() {
-            const confirmLogout = confirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
-            if (confirmLogout) {
-                localStorage.removeItem('userLoggedIn');
-                localStorage.removeItem('userName');
-                localStorage.removeItem('userPicture');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('userJoinDate');
-                
-                window.location.href = 'https://modweeb.github.io/auth-login/login.html'; // استبدل هذا بعنوان صفحة تسجيل الدخول
-            }
-        }
+    // إضافة مستمعي الأحداث
+    document.getElementById('edit-profile-button').addEventListener('click', () => handleAccountAction('تعديل الملف الشخصي'));
+    document.getElementById('manage-settings-button').addEventListener('click', () => handleAccountAction('إدارة الإعدادات'));
+    document.getElementById('logout-button').addEventListener('click', handleLogout);
 
-        document.getElementById('logout-button').addEventListener('click', handleLogout);
-
-        window.onload = updateUserInfo;
-    </script>
+    // تحديث المعلومات عند تحميل الصفحة
+    window.onload = updateUserInfo;
+</script>
 </body>
 </html>
