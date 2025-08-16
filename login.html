@@ -62,7 +62,6 @@
         .link:hover {
             color: #111827;
         }
-        /* التعديلات الجديدة هنا */
         .g_id_signin {
             display: flex;
             justify-content: center;
@@ -164,32 +163,44 @@
         }
     }
     
-    // هذا هو الكود الجديد الذي يجب أن تستبدله بالقديم
     function handleCredentialResponse(response) {
         const responsePayload = parseJwt(response.credential);
         
-        if (responsePayload && window.opener) {
-            // إرسال البيانات إلى النافذة الأصلية (مدونة بلوجر)
-            window.opener.postMessage({
-                type: 'loginSuccess',
-                user: {
-                    name: responsePayload.name,
-                    image: responsePayload.picture,
-                    email: responsePayload.email // إضافة البريد الإلكتروني
-                }
-            }, 'https://mdwnplus.blogspot.com');
-            
-            // تخزين البيانات في localStorage للوصول إليها في صفحة إدارة الحساب
+        if (responsePayload) {
+            // تخزين البيانات في localStorage
             localStorage.setItem('userLoggedIn', 'true');
             localStorage.setItem('userName', responsePayload.name);
             localStorage.setItem('userPicture', responsePayload.picture);
             localStorage.setItem('userEmail', responsePayload.email);
             localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
             
-            // إغلاق النافذة المنبثقة بعد إرسال الرسالة
-            window.close();
+            // التحقق من محددات الرابط لتحديد وجهة إعادة التوجيه
+            const params = new URLSearchParams(window.location.search);
+            const source = params.get('source');
+            const redirectTo = params.get('redirect_to');
+
+            if (redirectTo === 'account.html') {
+                // المستخدم قادم من صفحة الحساب، أعده إليها
+                window.location.href = 'https://modweeb.github.io/auth-login/account.html';
+            } else if (source === 'blog') {
+                // المستخدم قادم من المدونة، أرسل رسالة للنافذة الأم وأغلق النافذة المنبثقة
+                if (window.opener) {
+                    window.opener.postMessage({
+                        type: 'loginSuccess',
+                        user: {
+                            name: responsePayload.name,
+                            image: responsePayload.picture,
+                            email: responsePayload.email
+                        }
+                    }, 'https://mdwnplus.blogspot.com');
+                }
+                window.close();
+            } else {
+                // حالة احتياطية، أغلق النافذة المنبثقة
+                window.close();
+            }
         } else {
-            console.error("فشل في استلام بيانات المستخدم أو النافذة الأصلية غير موجودة.");
+            console.error("فشل في استلام بيانات المستخدم.");
         }
     }
 </script>
