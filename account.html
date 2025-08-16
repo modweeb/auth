@@ -234,13 +234,20 @@
             await showCustomAlert(`تم النقر على زر: ${action}\nسيتم تنفيذ هذه الوظيفة لاحقًا.`, 'إجراء');
         }
 
-        async function handleLogout() {
-            const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
-            if (confirmLogout) {
-                localStorage.clear();
-                window.location.href = 'https://mdwnplus.blogspot.com/';
-            }
+            async function handleLogout() {
+        const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
+        if (confirmLogout) {
+            localStorage.clear();
+            
+            // إرسال رسالة إلى المدونة لتسجيل الخروج
+            window.opener.postMessage({
+                type: 'logoutSuccess'
+            }, 'https://mdwnplus.blogspot.com');
+            
+            window.location.href = 'https://mdwnplus.blogspot.com/';
         }
+    }
+
 
         // --- إضافة مستمعي الأحداث للأزرار ---
         document.getElementById('edit-profile-button').addEventListener('click', () => handleAccountAction('تعديل الملف الشخصي'));
