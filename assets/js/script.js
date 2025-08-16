@@ -1,3 +1,72 @@
+// --- الدوال المخصصة للتنبيهات المنبثقة ---
+function showCustomAlert(message, title = 'تنبيه') {
+    return new Promise(resolve => {
+        const modal = document.getElementById('custom-modal-backdrop');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalButtons = document.getElementById('modal-buttons');
+
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        modalButtons.innerHTML = `<button class="button button-black flex-1" onclick="closeCustomModal(true)">حسنًا</button>`;
+        
+        modal.style.display = 'flex';
+        window.closeCustomModal = function(result) {
+            modal.style.display = 'none';
+            resolve(result);
+        };
+    });
+}
+
+function showCustomConfirm(message, title = 'تأكيد') {
+    return new Promise(resolve => {
+        const modal = document.getElementById('custom-modal-backdrop');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalButtons = document.getElementById('modal-buttons');
+
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        modalButtons.innerHTML = `
+            <button class="button button-outline flex-1" onclick="closeCustomModal(false)">إلغاء</button>
+            <button class="button button-black flex-1" onclick="closeCustomModal(true)">تأكيد</button>
+        `;
+
+        modal.style.display = 'flex';
+        window.closeCustomModal = function(result) {
+            modal.style.display = 'none';
+            resolve(result);
+        };
+    });
+}
+
+
+// --- الدوال الأساسية للموقع (صفحة الحساب) ---
+function updateUserInfo() {
+    const userName = localStorage.getItem('userName');
+    const userPicture = localStorage.getItem('userPicture');
+    const userEmail = localStorage.getItem('userEmail');
+    const userJoinDate = localStorage.getItem('userJoinDate') || 'غير متوفر';
+
+    if (userName) {
+        document.getElementById('user-name-display').textContent = userName;
+        document.getElementById('email-info').textContent = userEmail || 'غير متوفر';
+        document.getElementById('join-date-info').textContent = userJoinDate;
+    }
+    if (userPicture) {
+        document.getElementById('user-picture').src = userPicture;
+    }
+}
+
+async function handleLogout() {
+    const confirmLogout = await showCustomConfirm("هل أنت متأكد من رغبتك في تسجيل الخروج؟");
+    if (confirmLogout) {
+        localStorage.clear();
+        window.location.href = '../login'; // إعادة التوجيه إلى صفحة تسجيل الدخول
+    }
+}
+
+// --- الدوال الأساسية للموقع (صفحة تسجيل الدخول) ---
 function parseJwt(token) {
     try {
         var base64Url = token.split('.')[1];
@@ -16,39 +85,30 @@ function handleCredentialResponse(response) {
     const responsePayload = parseJwt(response.credential);
     
     if (responsePayload) {
-        // تخزين البيانات في localStorage
         localStorage.setItem('userLoggedIn', 'true');
         localStorage.setItem('userName', responsePayload.name);
         localStorage.setItem('userPicture', responsePayload.picture);
         localStorage.setItem('userEmail', responsePayload.email);
         localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
         
-        // التحقق من محددات الرابط لتحديد وجهة إعادة التوجيه
-        const params = new URLSearchParams(window.location.search);
-        const source = params.get('source');
-        const redirectTo = params.get('redirect_to');
-
-        if (redirectTo === 'account.html') {
-            // المستخدم قادم من صفحة الحساب، أعده إليها
-            window.location.href = 'https://modweeb.github.io/auth-login/account.html';
-        } else if (source === 'blog') {
-            // المستخدم قادم من المدونة، أرسل رسالة للنافذة الأم وأغلق النافذة المنبثقة
-            if (window.opener) {
-                window.opener.postMessage({
-                    type: 'loginSuccess',
-                    user: {
-                        name: responsePayload.name,
-                        image: responsePayload.picture,
-                        email: responsePayload.email
-                    }
-                }, 'https://mdwnplus.blogspot.com');
-            }
-            window.close();
-        } else {
-            // حالة احتياطية، أغلق النافذة المنبثقة
-            window.close();
-        }
+        window.location.href = '../account'; // إعادة التوجيه إلى صفحة الحساب
     } else {
         console.error("فشل في استلام بيانات المستخدم.");
     }
 }
+
+
+// --- إضافة مستمعي الأحداث عند تحميل الصفحة ---
+document.addEventListener('DOMContentLoaded', () => {
+    // التحقق من حالة تسجيل الدخول عند تحميل صفحة الحساب
+    const isAccountPage = window.location.pathname.includes('/account');
+    if (isAccountPage) {
+        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+        if (!isLoggedIn) {
+            window.location.href = '../login';
+        } else {
+            updateUserInfo();
+            document.getElementById('logout-button').addEventListener('click', handleLogout);
+        }
+    }
+});
