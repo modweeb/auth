@@ -1,4 +1,4 @@
-// دوال التوثيق وإدارة الحساب
+// دوال المصادقة وإدارة الحساب
 
 function parseJwt(token) {
     if (!token || token.split('.').length !== 3) {
@@ -29,14 +29,14 @@ function handleCredentialResponse(response) {
         localStorage.setItem('userEmail', responsePayload.email);
         localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
 
+        // التحقق من مسار الإعادة
         const params = new URLSearchParams(window.location.search);
         const redirectTo = params.get('redirect_to');
 
         if (redirectTo === 'account') {
             window.location.href = '../account';
         } else {
-            // إعادة التوجيه إلى الصفحة الرئيسية للمستودع (مثال)
-            window.location.href = 'https://modweeb.github.io/auth-login/'; 
+            window.location.href = '/auth-login/login';
         }
     } else {
         console.error("فشل في استلام بيانات المستخدم الصالحة.");
@@ -44,25 +44,22 @@ function handleCredentialResponse(response) {
 }
 
 function handleLogoutAndRedirect() {
+    // مسح جميع بيانات المستخدم
     localStorage.removeItem('userLoggedIn');
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userPicture');
     localStorage.removeItem('userJoinDate');
-
-    // عرض رسالة تأكيد للمستخدم
-    alert("تم تسجيل الخروج بنجاح.");
     
-    // إعادة التوجيه إلى صفحة تسجيل الدخول
-    window.location.href = 'https://modweeb.github.io/auth-login/login/';
+    // إعادة التوجيه بعد تسجيل الخروج
+    setTimeout(() => {
+        window.location.href = 'https://mdwnplus.blogspot.com';
+    }, 300);
 }
 
 function updateAccountInfo() {
     const accountInfo = document.getElementById('accountInfo');
-    if (!accountInfo) {
-        console.error("عنصر HTML 'accountInfo' غير موجود.");
-        return;
-    }
+    if (!accountInfo) return;
 
     const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
     const userName = localStorage.getItem('userName');
@@ -82,7 +79,7 @@ function updateAccountInfo() {
     } else {
         accountInfo.innerHTML = `
             <p class="text-neutral-500">لم يتم تسجيل الدخول.</p>
-            <a href="https://modweeb.github.io/auth-login/login" class="button button-black mt-4">تسجيل الدخول</a>
+            <a href="../login" class="button button-black mt-4">تسجيل الدخول</a>
         `;
     }
 }
