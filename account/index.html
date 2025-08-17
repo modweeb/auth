@@ -64,7 +64,7 @@
                     </div>
                 
                 <div class="mt-6">
-                    <button onclick="handleLogout()" class="button button-black w-full">
+                    <button onclick="handleLogoutAndRedirect()" class="button button-black w-full">
                         تسجيل الخروج
                     </button>
                 </div>
@@ -72,57 +72,17 @@
         </div>
     </div>
 
+    <script src="../js/auth.js"></script>
+
     <script>
-        // دالة عرض معلومات المستخدم
-        function updateAccountInfo() {
-            const accountInfo = document.getElementById('accountInfo');
-            if (!accountInfo) {
-                console.error("عنصر HTML 'accountInfo' غير موجود.");
-                return;
-            }
-
-            const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-            const userName = localStorage.getItem('userName');
-            const userPicture = localStorage.getItem('userPicture');
-            const userEmail = localStorage.getItem('userEmail');
-            const userJoinDate = localStorage.getItem('userJoinDate');
-            
-            if (isLoggedIn && userName && userEmail) {
-                // المستخدم مسجل الدخول، اعرض بياناته
-                accountInfo.innerHTML = `
-                    <div class="flex items-center justify-center mb-4">
-                        <img src="${userPicture || 'https://via.placeholder.com/150'}" alt="${userName}" class="w-16 h-16 rounded-full">
-                    </div>
-                    <p class="text-lg font-semibold">${userName}</p>
-                    <p class="text-neutral-500">${userEmail}</p>
-                    <p class="text-neutral-500">تاريخ الانضمام: ${userJoinDate || 'غير محدد'}</p>
-                `;
-            } else {
-                // المستخدم غير مسجل الدخول، أعرض رسالة وأزرار تسجيل الدخول
-                accountInfo.innerHTML = `
-                    <p class="text-neutral-500">لم يتم تسجيل الدخول.</p>
-                    <a href="https://modweeb.github.io/auth-login/login?redirectTo=account.html" class="button button-black mt-4">تسجيل الدخول</a>
-                `;
-            }
-        }
-        
-        // دالة تسجيل الخروج وإعادة التوجيه
-        function handleLogout() {
-            localStorage.removeItem('userLoggedIn');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userPicture');
-            localStorage.removeItem('userJoinDate');
-            
-            // إعادة التوجيه إلى صفحة تسجيل الدخول
-            window.location.href = 'https://modweeb.github.io/auth-login/login.html?redirectTo=account.html';
-        }
-
-        // تحديث واجهة المستخدم عند التحميل
-        document.addEventListener('DOMContentLoaded', updateAccountInfo);
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAccountInfo();
+        });
 
         // الاستماع لتغييرات localStorage
-        window.addEventListener('storage', updateAccountInfo);
+        window.addEventListener('storage', () => {
+            updateAccountInfo();
+        });
     </script>
 </body>
 </html>
