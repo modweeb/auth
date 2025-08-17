@@ -3,26 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة تسجيل الدخول - Modweeb Design</title>
+    <title>تسجيل الدخول - Modweeb Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .google-icon {
-            width: 16px;
-            height: 16px;
-            margin-left: 8px;
-        }
-        .logo-image {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+            background-color: #fafafa;
         }
         .card {
             background: white;
-            border-radius: 20px;
+            border-radius: 1.25rem;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             border: 1px solid #e5e7eb;
         }
@@ -30,14 +21,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 6px;
-            font-size: 12px;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
             font-weight: 500;
             transition: all 0.2s;
             cursor: pointer;
-            text-decoration: none;
-            border: none;
-            padding: 8px 16px;
+            padding: 0.5rem 1rem;
         }
         .button-outline {
             background: transparent;
@@ -57,148 +46,171 @@
         .link {
             color: #6b7280;
             text-decoration: underline;
-            text-underline-offset: 4px;
+            text-underline-offset: 0.25rem;
         }
         .link:hover {
             color: #111827;
         }
         .g_id_signin {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0;
-            width: 100% !important;
-        }
-        .g_id_signin > div {
-            margin: 0 auto !important;
             width: 100% !important;
             display: flex !important;
             justify-content: center !important;
         }
+        .g_id_signin > div {
+            width: 100% !important;
+            margin: 0 !important;
+        }
     </style>
 </head>
-<body class="bg-neutral-50 min-h-screen">
-    <div class="flex min-h-screen items-center justify-center px-4 py-12">
-        <div class="mx-auto w-full max-w-md space-y-6 text-center">
-            <div class="flex items-center justify-center gap-2 text-sm font-semibold text-neutral-700 -mt-4">
-                <img 
-                    src="https://i.postimg.cc/v8xt8V5n/web-app-manifest-512x512.png" 
-                    alt="Modweeb Design logo" 
-                    class="logo-image"
-                />
-                Modweeb Design
+<body class="bg-neutral-50 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md mx-auto space-y-6 text-center">
+        <!-- Header with Logo -->
+        <div class="flex items-center justify-center gap-2 text-sm font-semibold text-neutral-700">
+            <img src="https://i.postimg.cc/v8xt8V5n/web-app-manifest-512x512.png" 
+                 alt="Modweeb Design" 
+                 class="w-5 h-5 rounded-full">
+            Modweeb Design
+        </div>
+        
+        <!-- Login Card -->
+        <div class="card w-full">
+            <div class="p-6 pb-4 text-center">
+                <h1 class="text-xl font-bold text-neutral-900">مرحبًا بعودتك</h1>
+                <p class="text-neutral-500 mt-1">سجل الدخول باستخدام حسابك الاجتماعي</p>
             </div>
             
-            <div class="card w-full max-w-sm mx-auto">
-                <div class="space-y-0.2 text-center p-6 pb-0">
-                    <h1 class="text-0.5xl font-bold text-neutral-900">مرحبا بعودتك</h1>
-                    <p class="text-neutral-500">تسجيل الدخول باستخدام حسابك الاجتماعي</p>
-                </div>
-                
-                <div class="p-6 pt-4">
-                    <div class="grid gap-4">
-                        <div id="g_id_onload"
-                            data-client_id="36053852280-tbftp3smmoaq0g14homp75pie0h6jcng.apps.googleusercontent.com"
-                            data-context="signin"
-                            data-ux_mode="popup"
-                            data-callback="handleCredentialResponse"
-                            data-auto_prompt="false">
-                        </div>
-                        <div class="g_id_signin"
-                            data-type="standard"
-                            data-shape="rectangular"
-                            data-theme="outline"
-                            data-text="signin_with"
-                            data-size="large"
-                            data-logo_alignment="left">
-                        </div>
-                        
-                        <div class="flex gap-2">
-                            <a href="https://t.me/modweeb" target="_blank" rel="noopener noreferrer" class="button button-black flex-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-send">
-                                    <path d="M22 2L11 13"/>
-                                    <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
-                                </svg>
-                                تابعنا تيليجرام
-                            </a>
-                            <a href="https://www.blogger.com/followers/follow/2986788159829882847" target="_blank" rel="noopener noreferrer" class="button button-black flex-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4 lucide lucide-rss">
-                                    <path d="M4 11a9 9 0 0 1 9 9"/>
-                                    <path d="M4 4a16 16 0 0 1 16 16"/>
-                                    <circle cx="5" cy="19" r="1"/>
-                                </svg>
-                                تابع المدونة
-                            </a>
-                        </div>
+            <div class="p-6 pt-0">
+                <div class="space-y-4">
+                    <!-- Google Sign-In Button -->
+                    <div id="g_id_onload"
+                         data-client_id="36053852280-tbftp3smmoaq0g14homp75pie0h6jcng.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleCredentialResponse"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="flex gap-3">
+                        <a href="https://t.me/modweeb" 
+                           target="_blank" 
+                           rel="noopener"
+                           class="button button-black flex-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2">
+                                <path d="M22 2L11 13"/>
+                                <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                            تيليجرام
+                        </a>
+                        <a href="https://www.blogger.com/followers/follow/2986788159829882847" 
+                           target="_blank" 
+                           rel="noopener"
+                           class="button button-black flex-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2">
+                                <path d="M4 11a9 9 0 0 1 9 9"/>
+                                <path d="M4 4a16 16 0 0 1 16 16"/>
+                                <circle cx="5" cy="19" r="1"/>
+                            </svg>
+                            المدونة
+                        </a>
                     </div>
                 </div>
             </div>
-            
-            <p class="px-12 text-center text-sm text-neutral-500">
-                بالنقر على متابعة، فإنك توافق على
-                <a href="https://www.modweeb.com/p/terms.html" class="link">
-                    شروط الخدمة
-                </a>
-                و
-                <a href="https://www.modweeb.com/p/privacy-policy.html" class="link">
-                    سياسة الخصوصية
-                </a>
-                .
-            </p>
         </div>
+        
+        <!-- Footer Links -->
+        <p class="text-sm text-neutral-500 px-4">
+            بالمتابعة، أنت توافق على
+            <a href="https://www.modweeb.com/p/terms.html" class="link">شروط الخدمة</a>
+            و
+            <a href="https://www.modweeb.com/p/privacy-policy.html" class="link">سياسة الخصوصية</a>.
+        </p>
     </div>
-    
-  <script>
+
+    <script>
+    /**
+     * فك تشفير JWT token
+     * @param {string} token - رمز جوجل
+     * @returns {object|null} بيانات المستخدم أو null إذا فشل التحليل
+     */
     function parseJwt(token) {
         try {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+            );
             return JSON.parse(jsonPayload);
         } catch (e) {
-            console.error("Failed to parse JWT", e);
+            console.error("فشل في تحليل Token:", e);
             return null;
         }
     }
-    
-    function handleCredentialResponse(response) {
-        const responsePayload = parseJwt(response.credential);
-        
-        if (responsePayload) {
-            // تخزين البيانات في localStorage
-            localStorage.setItem('userLoggedIn', 'true');
-            localStorage.setItem('userName', responsePayload.name);
-            localStorage.setItem('userPicture', responsePayload.picture);
-            localStorage.setItem('userEmail', responsePayload.email);
-            
-            // التحقق من مصدر الطلب
-            const params = new URLSearchParams(window.location.search);
-            const source = params.get('source');
-            const returnUrl = params.get('cbu');
 
-            if (source === 'blog') {
-                // إرسال بيانات المستخدم إلى المدونة
-                if (window.opener) {
-                    window.opener.postMessage({
-                        type: 'loginSuccess',
-                        user: {
-                            name: responsePayload.name,
-                            image: responsePayload.picture,
-                            email: responsePayload.email
-                        }
-                    }, 'https://mdwnplus.blogspot.com');
-                }
-                window.close();
-            } else {
-                // إعادة توجيه إلى صفحة الحساب
-                window.location.href = '../account';
+    /**
+     * معالجة استجابة مصادقة جوجل
+     * @param {object} response - استجابة المصادقة
+     */
+    function handleCredentialResponse(response) {
+        const userData = parseJwt(response.credential);
+        
+        if (!userData) {
+            console.error("بيانات المستخدم غير صالحة");
+            return;
+        }
+
+        // تخزين بيانات الجلسة
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('userName', userData.name);
+        localStorage.setItem('userPicture', userData.picture);
+        localStorage.setItem('userEmail', userData.email);
+        localStorage.setItem('userJoinDate', new Date().toISOString());
+
+        // تحديد مسار الإعادة
+        const urlParams = new URLSearchParams(window.location.search);
+        const source = urlParams.get('source');
+        const redirectTo = urlParams.get('redirect_to');
+
+        if (source === 'blog') {
+            // إرسال البيانات إلى المدونة الأصلية
+            if (window.opener) {
+                window.opener.postMessage({
+                    type: 'loginSuccess',
+                    user: {
+                        name: userData.name,
+                        image: userData.picture,
+                        email: userData.email
+                    }
+                }, 'https://mdwnplus.blogspot.com');
             }
+            window.close();
+        } else if (redirectTo === 'account') {
+            window.location.href = 'https://modweeb.github.io/auth-login/account';
         } else {
-            console.error("فشل في استلام بيانات المستخدم.");
+            window.location.href = 'https://modweeb.github.io/auth-login/login';
         }
     }
+
+    // التحقق من حالة تسجيل الدخول عند التحميل
+    document.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('userLoggedIn') === 'true') {
+            const redirectTo = new URLSearchParams(window.location.search).get('redirect_to');
+            if (redirectTo === 'account') {
+                window.location.href = 'https://modweeb.github.io/auth-login/account';
+            }
+        }
+    });
     </script>
 </body>
 </html>
