@@ -32,10 +32,11 @@ function handleCredentialResponse(response) {
         const params = new URLSearchParams(window.location.search);
         const redirectTo = params.get('redirect_to');
 
-        if (redirectTo === 'account.html') {
-            window.location.href = 'account.html';
+        if (redirectTo === 'account') {
+            window.location.href = '../account';
         } else {
-            window.location.href = '/'; // إعادة التوجيه إلى الصفحة الرئيسية
+            // إعادة التوجيه إلى الصفحة الرئيسية للمستودع (مثال)
+            window.location.href = 'https://modweeb.github.io/auth-login/'; 
         }
     } else {
         console.error("فشل في استلام بيانات المستخدم الصالحة.");
@@ -47,12 +48,13 @@ function handleLogoutAndRedirect() {
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userPicture');
-    localStorage.removeItem('userJoinDate'); // تأكد من إزالة تاريخ الانضمام أيضًا
+    localStorage.removeItem('userJoinDate');
 
     // عرض رسالة تأكيد للمستخدم
     alert("تم تسجيل الخروج بنجاح.");
-
-    window.location.href = '/'; // إعادة التوجيه إلى الصفحة الرئيسية
+    
+    // إعادة التوجيه إلى صفحة تسجيل الدخول
+    window.location.href = 'https://modweeb.github.io/auth-login/login/';
 }
 
 function updateAccountInfo() {
@@ -80,7 +82,7 @@ function updateAccountInfo() {
     } else {
         accountInfo.innerHTML = `
             <p class="text-neutral-500">لم يتم تسجيل الدخول.</p>
-            <a href="login.html" class="button button-black mt-4">تسجيل الدخول</a>
+            <a href="https://modweeb.github.io/auth-login/login" class="button button-black mt-4">تسجيل الدخول</a>
         `;
     }
 }
