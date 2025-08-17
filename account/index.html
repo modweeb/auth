@@ -61,7 +61,8 @@
                 <h1 class="text-xl font-bold text-neutral-900 mb-4">إدارة الحساب</h1>
                 
                 <div id="accountInfo" class="space-y-4">
-                    </div>
+                    <!-- معلومات المستخدم ستظهر هنا -->
+                </div>
                 
                 <div class="mt-6">
                     <button onclick="handleLogoutAndRedirect()" class="button button-black w-full">
@@ -73,16 +74,21 @@
     </div>
 
     <script src="../js/auth.js"></script>
-
+    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            updateAccountInfo();
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+        // التحقق من حالة تسجيل الدخول
+        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+        if (!isLoggedIn) {
+            window.location.href = '../login?redirect_to=account';
+            return;
+        }
+        
+        updateAccountInfo();
+    });
 
-        // الاستماع لتغييرات localStorage
-        window.addEventListener('storage', () => {
-            updateAccountInfo();
-        });
+    // تحديث المعلومات عند تغيير localStorage
+    window.addEventListener('storage', updateAccountInfo);
     </script>
 </body>
 </html>
