@@ -1,4 +1,3 @@
-كود ملف  صفحة تسجيل الدخول  في GitHub 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -165,42 +164,44 @@
         }
     }
     
+
     function handleCredentialResponse(response) {
         const responsePayload = parseJwt(response.credential);
         
         if (responsePayload) {
-            // تخزين البيانات في localStorage
-            localStorage.setItem('userLoggedIn', 'true');
-            localStorage.setItem('userName', responsePayload.name);
-            localStorage.setItem('userPicture', responsePayload.picture);
-            localStorage.setItem('userEmail', responsePayload.email);
-            localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
-            
-            // التحقق من محددات الرابط لتحديد وجهة إعادة التوجيه
             const params = new URLSearchParams(window.location.search);
-            const source = params.get('source');
-            const redirectTo = params.get('redirect_to');
-            const returnUrl = params.get('cbu'); // الحصول على رابط العودة
+            const source = params.get('source'); // لم يتم استخدام 'source' في الكود الأصلي، ربما خطأ مطبعي
+            const cbu = params.get('cbu'); // هذا هو المتغير الصحيح حسب كود المدونة
 
-            if (source === 'blog' && window.opener) {
-                // المستخدم قادم من المدونة، أرسل رسالة للنافذة الأم وأغلق النافذة المنبثقة
-                window.opener.postMessage({
-                    type: 'loginSuccess',
-                    user: {
-                        name: responsePayload.name,
-                        image: responsePayload.picture,
-                        email: responsePayload.email
-                    }
-                }, 'https://mdwnplus.blogspot.com'); // **تغيير النطاق إلى نطاق المدونة الفعلي**
-                window.close();
-            } else if (redirectTo === 'account.html') {
-                window.location.href = 'https://modweeb.github.io/auth-login/account.html';
-            } else {
-                // حالة احتياطية، إما العودة لصفحة المدونة الأصلية أو إغلاق النافذة
-                if (returnUrl && window.opener) {
-                   window.opener.location.href = decodeURIComponent(returnUrl);
+            // إذا كان هناك رابط إعادة توجيه (cbu) من المدونة
+            if (cbu) {
+                // إرسال البيانات إلى النافذة الأم
+                if (window.opener) {
+                    window.opener.postMessage({
+                        type: 'loginSuccess',
+                        user: {
+                            name: responsePayload.name,
+                            image: responsePayload.picture,
+                            email: responsePayload.email
+                        }
+                    }, 'https://mdwnplus.blogspot.com'); // **تغيير النطاق إلى نطاق مدونتك**
+                    
+                    window.close();
+                    return;
                 }
-                window.close();
+            } else {
+                // في حالة الانتقال المباشر إلى صفحة تسجيل الدخول، يمكن تخزين البيانات محليًا
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userName', responsePayload.name);
+                localStorage.setItem('userPicture', responsePayload.picture);
+                localStorage.setItem('userEmail', responsePayload.email);
+                localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
+                
+                // إعادة التوجيه إلى صفحة الحساب إذا كان هذا هو الهدف
+                const redirectTo = params.get('redirect_to');
+                if (redirectTo === 'account.html') {
+                    window.location.href = 'account.html';
+                }
             }
         } else {
             console.error("فشل في استلام بيانات المستخدم.");
