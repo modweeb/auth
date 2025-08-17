@@ -181,8 +181,7 @@
 
             if (redirectTo === 'account.html') {
                 // المستخدم قادم من صفحة الحساب، أعده إليها
-                // تم تعديل الرابط هنا
-                window.location.href = 'https://modweeb.com/account';
+                window.location.href = 'https://modweeb.github.io/auth-login/account.html';
             } else if (source === 'blog') {
                 // المستخدم قادم من المدونة، أرسل رسالة للنافذة الأم وأغلق النافذة المنبثقة
                 if (window.opener) {
@@ -193,7 +192,7 @@
                             image: responsePayload.picture,
                             email: responsePayload.email
                         }
-                    }, 'https://mdwnplus.blogspot.com');
+                    }, 'https://www.modweeb.com');
                 }
                 window.close();
             } else {
