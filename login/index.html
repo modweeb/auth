@@ -150,7 +150,6 @@
     
   <script>
     function parseJwt(token) {
-        // ... (هذا الجزء من الكود صحيح)
         try {
             var base64Url = token.split('.')[1];
             var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -164,50 +163,40 @@
         }
     }
     
-
     function handleCredentialResponse(response) {
         const responsePayload = parseJwt(response.credential);
         
         if (responsePayload) {
+            // تخزين البيانات في localStorage
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userName', responsePayload.name);
+            localStorage.setItem('userPicture', responsePayload.picture);
+            localStorage.setItem('userEmail', responsePayload.email);
+            localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
+            
+            // التحقق من محددات الرابط لتحديد وجهة إعادة التوجيه
             const params = new URLSearchParams(window.location.search);
-            const source = params.get('source'); // لم يتم استخدام 'source' في الكود الأصلي، ربما خطأ مطبعي
-            const cbu = params.get('cbu'); // هذا هو المتغير الصحيح حسب كود المدونة
+            const returnUrl = params.get('cbu');
 
-            // إذا كان هناك رابط إعادة توجيه (cbu) من المدونة
-            if (cbu) {
-                // إرسال البيانات إلى النافذة الأم
-                if (window.opener) {
-                    window.opener.postMessage({
-                        type: 'loginSuccess',
-                        user: {
-                            name: responsePayload.name,
-                            image: responsePayload.picture,
-                            email: responsePayload.email
-                        }
-                    }, 'https://mdwnplus.blogspot.com'); // **تغيير النطاق إلى نطاق مدونتك**
-                    
-                    window.close();
-                    return;
-                }
+            if (window.opener && returnUrl) {
+                // المستخدم قادم من المدونة، أرسل رسالة للنافذة الأم وأغلق النافذة المنبثقة
+                window.opener.postMessage({
+                    type: 'loginSuccess',
+                    user: {
+                        name: responsePayload.name,
+                        image: responsePayload.picture,
+                        email: responsePayload.email
+                    }
+                }, 'https://www.modweeb.com');
+                window.close();
             } else {
-                // في حالة الانتقال المباشر إلى صفحة تسجيل الدخول، يمكن تخزين البيانات محليًا
-                localStorage.setItem('userLoggedIn', 'true');
-                localStorage.setItem('userName', responsePayload.name);
-                localStorage.setItem('userPicture', responsePayload.picture);
-                localStorage.setItem('userEmail', responsePayload.email);
-                localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
-                
-                // إعادة التوجيه إلى صفحة الحساب إذا كان هذا هو الهدف
-                const redirectTo = params.get('redirect_to');
-                if (redirectTo === 'account.html') {
-                    window.location.href = 'account.html';
-                }
+                // حالة احتياطية، أعد التوجيه إلى صفحة الحساب
+                window.location.href = 'https://modweeb.github.io/auth-login/account/';
             }
         } else {
             console.error("فشل في استلام بيانات المستخدم.");
         }
     }
 </script>
-
 </body>
 </html>
