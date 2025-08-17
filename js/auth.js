@@ -1,6 +1,11 @@
 // دوال التوثيق وإدارة الحساب
 
 function parseJwt(token) {
+    if (!token || token.split('.').length !== 3) {
+        console.error("رمز JWT غير صالح.");
+        return null;
+    }
+
     try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -9,17 +14,18 @@ function parseJwt(token) {
         }).join(''));
         return JSON.parse(jsonPayload);
     } catch (e) {
-        console.error("Failed to parse JWT", e);
+        console.error("فشل في فك تشفير JWT:", e);
         return null;
     }
 }
 
 function handleCredentialResponse(response) {
     const responsePayload = parseJwt(response.credential);
-    if (responsePayload) {
+    
+    if (responsePayload && responsePayload.name && responsePayload.email) {
         localStorage.setItem('userLoggedIn', 'true');
         localStorage.setItem('userName', responsePayload.name);
-        localStorage.setItem('userPicture', responsePayload.picture);
+        localStorage.setItem('userPicture', responsePayload.picture || '');
         localStorage.setItem('userEmail', responsePayload.email);
         localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
 
@@ -29,10 +35,10 @@ function handleCredentialResponse(response) {
         if (redirectTo === 'account.html') {
             window.location.href = 'account.html';
         } else {
-            window.location.href = '/'; // أو أي صفحة افتراضية
+            window.location.href = '/'; // إعادة التوجيه إلى الصفحة الرئيسية
         }
     } else {
-        console.error("فشل في استلام بيانات المستخدم.");
+        console.error("فشل في استلام بيانات المستخدم الصالحة.");
     }
 }
 
@@ -41,11 +47,21 @@ function handleLogoutAndRedirect() {
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userPicture');
+    localStorage.removeItem('userJoinDate'); // تأكد من إزالة تاريخ الانضمام أيضًا
+
+    // عرض رسالة تأكيد للمستخدم
+    alert("تم تسجيل الخروج بنجاح.");
+
     window.location.href = '/'; // إعادة التوجيه إلى الصفحة الرئيسية
 }
 
 function updateAccountInfo() {
     const accountInfo = document.getElementById('accountInfo');
+    if (!accountInfo) {
+        console.error("عنصر HTML 'accountInfo' غير موجود.");
+        return;
+    }
+
     const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
     const userName = localStorage.getItem('userName');
     const userPicture = localStorage.getItem('userPicture');
@@ -59,7 +75,7 @@ function updateAccountInfo() {
             </div>
             <p class="text-lg font-semibold">${userName}</p>
             <p class="text-neutral-500">${userEmail}</p>
-            <p class="text-neutral-500">تاريخ الانضمام: ${userJoinDate}</p>
+            <p class="text-neutral-500">تاريخ الانضمام: ${userJoinDate || 'غير محدد'}</p>
         `;
     } else {
         accountInfo.innerHTML = `
