@@ -172,31 +172,33 @@
             localStorage.setItem('userName', responsePayload.name);
             localStorage.setItem('userPicture', responsePayload.picture);
             localStorage.setItem('userEmail', responsePayload.email);
-            localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
             
-            // التحقق من محددات الرابط لتحديد وجهة إعادة التوجيه
+            // التحقق من مصدر الطلب
             const params = new URLSearchParams(window.location.search);
+            const source = params.get('source');
             const returnUrl = params.get('cbu');
 
-            if (window.opener && returnUrl) {
-                // المستخدم قادم من المدونة، أرسل رسالة للنافذة الأم وأغلق النافذة المنبثقة
-                window.opener.postMessage({
-                    type: 'loginSuccess',
-                    user: {
-                        name: responsePayload.name,
-                        image: responsePayload.picture,
-                        email: responsePayload.email
-                    }
-                }, 'https://www.modweeb.com');
+            if (source === 'blog') {
+                // إرسال بيانات المستخدم إلى المدونة
+                if (window.opener) {
+                    window.opener.postMessage({
+                        type: 'loginSuccess',
+                        user: {
+                            name: responsePayload.name,
+                            image: responsePayload.picture,
+                            email: responsePayload.email
+                        }
+                    }, 'https://mdwnplus.blogspot.com');
+                }
                 window.close();
             } else {
-                // حالة احتياطية، أعد التوجيه إلى صفحة الحساب
-                window.location.href = 'https://modweeb.github.io/auth-login/account/';
+                // إعادة توجيه إلى صفحة الحساب
+                window.location.href = '../account';
             }
         } else {
             console.error("فشل في استلام بيانات المستخدم.");
         }
     }
-</script>
+    </script>
 </body>
 </html>
