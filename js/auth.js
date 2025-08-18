@@ -93,16 +93,8 @@ function handleLogoutAndRedirect() {
     
     keys.forEach(key => localStorage.removeItem(key));
     
-    // إعادة التوجيه مع تأخير بسيط
-    setTimeout(() => {
-        const currentPath = window.location.pathname;
-        
-        if (currentPath.includes('/account')) {
-            window.location.href = 'https://modweeb.github.io/auth-login/login';
-        } else {
-            window.location.href = 'https://mdwnplus.blogspot.com';
-        }
-    }, 300);
+    // إعادة التوجيه إلى صفحة تسجيل الدخول
+    window.location.href = 'https://modweeb.github.io/auth-login/login';
 }
 
 /**
@@ -151,7 +143,7 @@ function updateAccountInfo() {
         // إذا كان في صفحة الحساب، إعادة التوجيه بعد فترة
         if (window.location.pathname.includes('/account')) {
             setTimeout(() => {
-                window.location.href = 'https://modweeb.github.io/auth-login/login?redirect_to=account';
+                window.location.href = 'https://modweeb.github.io/auth-login/login/?redirect_to=account';
             }, 1500);
         }
     }
@@ -166,7 +158,7 @@ function validateAuth() {
     );
     
     if (!isValid && window.location.pathname.includes('/account')) {
-        window.location.href = 'https://modweeb.github.io/auth-login/login?redirect_to=account';
+        window.location.href = 'https://modweeb.github.io/auth-login/login/?redirect_to=account';
     }
     
     return isValid;
