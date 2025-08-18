@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حسابي - Modweeb Design</title>
+    <title>إدارة الحساب - Modweeb Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #fafafa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .card {
             background: white;
-            border-radius: 1.25rem;
+            border-radius: 20px;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             border: 1px solid #e5e7eb;
         }
@@ -20,110 +19,70 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 500;
-            transition: all 0.2s ease;
-            padding: 0.625rem 1.25rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            padding: 8px 16px;
         }
         .button-black {
             background: #000000;
             color: white;
-            border: none;
         }
         .button-black:hover {
             background: #262626;
         }
-        .user-avatar {
-            width: 5rem;
-            height: 5rem;
-            border-radius: 9999px;
-            object-fit: cover;
-            border: 2px solid #f3f4f6;
+        .link {
+            color: #6b7280;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+        .link:hover {
+            color: #111827;
         }
     </style>
 </head>
-<body class="bg-neutral-50 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md mx-auto space-y-6">
-        <!-- Header with Logo -->
-        <div class="flex items-center justify-center gap-2 text-sm font-semibold text-neutral-700">
-            <img src="https://i.postimg.cc/v8xt8V5n/web-app-manifest-512x512.png" 
-                 alt="Modweeb Design" 
-                 class="w-6 h-6 rounded-full">
-            Modweeb Design
-        </div>
-        
-        <!-- Account Card -->
-        <div class="card w-full p-6">
-            <h1 class="text-xl font-bold text-center text-neutral-900 mb-6">إدارة الحساب</h1>
-            
-            <!-- Account Info Container -->
-            <div id="accountInfo" class="space-y-5 text-center">
-                <!-- سيتم ملؤها بواسطة JavaScript -->
+<body class="bg-neutral-50 min-h-screen">
+    <div class="flex min-h-screen items-center justify-center px-4 py-12">
+        <div class="mx-auto w-full max-w-md space-y-6 text-center">
+            <div class="flex items-center justify-center gap-2 text-sm font-semibold text-neutral-700 -mt-4">
+                <img 
+                    src="https://i.postimg.cc/v8xt8V5n/web-app-manifest-512x512.png" 
+                    alt="Modweeb Design logo" 
+                    class="w-6 h-6 rounded-full"
+                />
+                Modweeb Design
             </div>
             
-            <!-- Logout Button -->
-            <div class="mt-8">
-                <button onclick="handleLogoutAndRedirect()" 
-                        class="button button-black w-full py-3">
-                    تسجيل الخروج
-                </button>
+            <div class="card w-full max-w-sm mx-auto p-6">
+                <h1 class="text-xl font-bold text-neutral-900 mb-4">إدارة الحساب</h1>
+                
+                <div id="accountInfo" class="space-y-4">
+                    </div>
+                
+                <div class="mt-6">
+                    <button onclick="handleLogoutAndRedirect()" class="button button-black w-full">
+                        تسجيل الخروج
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ملف المصادقة الرئيسي -->
-    <script src="https://modweeb.github.io/auth-login/js/auth.js"></script>
-    
+    <script src="../js/auth.js"></script>
+
     <script>
-    /**
-     * تحديث واجهة معلومات الحساب
-     */
-    function updateAccountUI() {
-        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-        const accountInfo = document.getElementById('accountInfo');
-        
-        if (!isLoggedIn) {
-            window.location.href = 'https://modweeb.github.io/auth-login/login?redirect_to=account';
-            return;
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAccountInfo();
+        });
 
-        const userData = {
-            name: localStorage.getItem('userName') || 'مستخدم',
-            email: localStorage.getItem('userEmail') || 'بريد إلكتروني غير متوفر',
-            picture: localStorage.getItem('userPicture') || 'https://i.postimg.cc/v8xt8V5n/web-app-manifest-512x512.png',
-            joinDate: localStorage.getItem('userJoinDate') || 'غير معروف'
-        };
-
-        accountInfo.innerHTML = `
-            <div class="flex justify-center">
-                <img src="${userData.picture}" 
-                     alt="${userData.name}" 
-                     class="user-avatar"
-                     onerror="this.src='https://i.postimg.cc/v8xt8V5n/web-app-manifest-512x512.png'">
-            </div>
-            <div class="space-y-1">
-                <h2 class="text-lg font-semibold">${userData.name}</h2>
-                <p class="text-neutral-600 text-sm">${userData.email}</p>
-                <p class="text-neutral-500 text-xs">منضم منذ: ${userData.joinDate}</p>
-            </div>
-        `;
-    }
-
-    // تحميل البيانات عند بدء الصفحة
-    document.addEventListener('DOMContentLoaded', () => {
-        updateAccountUI();
-        
-        // التحقق من صحة بيانات الجلسة
-        if (typeof validateAuth === 'function') {
-            if (!validateAuth()) {
-                window.location.href = 'https://modweeb.github.io/auth-login/login?redirect_to=account';
-            }
-        }
-    });
-
-    // تحديث عند تغيير التخزين المحلي (من نافذة أخرى)
-    window.addEventListener('storage', updateAccountUI);
+        // الاستماع لتغييرات localStorage
+        window.addEventListener('storage', () => {
+            updateAccountInfo();
+        });
     </script>
 </body>
 </html>
