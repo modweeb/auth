@@ -1,11 +1,5 @@
-// دوال المصادقة وإدارة الحساب - النسخة المحدثة
-// تاريخ التحديث: 2023-11-15
+// دوال التوثيق وإدارة الحساب
 
-/**
- * فك تشفير token JWT
- * @param {string} token - رمز JWT
- * @returns {object|null} بيانات المستخدم أو null إذا فشل التحليل
- */
 function parseJwt(token) {
     if (!token || token.split('.').length !== 3) {
         console.error("رمز JWT غير صالح.");
@@ -15,12 +9,9 @@ function parseJwt(token) {
     try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(
-            atob(base64)
-            .split('')
-            .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-            .join('')
-        );
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
+            return `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`;
+        }).join(''));
         return JSON.parse(jsonPayload);
     } catch (e) {
         console.error("فشل في فك تشفير JWT:", e);
@@ -28,34 +19,23 @@ function parseJwt(token) {
     }
 }
 
-/**
- * معالجة استجابة مصادقة جوجل
- * @param {object} response - استجابة المصادقة من جوجل
- */
+// دالة لمعالجة رد جوجل بعد المصادقة
 function handleCredentialResponse(response) {
     const responsePayload = parseJwt(response.credential);
     
-    if (responsePayload?.name && responsePayload?.email) {
-        // تخزين بيانات المستخدم
+    if (responsePayload && responsePayload.name && responsePayload.email) {
+        // تخزين البيانات في localStorage
         localStorage.setItem('userLoggedIn', 'true');
         localStorage.setItem('userName', responsePayload.name);
         localStorage.setItem('userPicture', responsePayload.picture || '');
         localStorage.setItem('userEmail', responsePayload.email);
-        localStorage.setItem('userJoinDate', 
-            new Date().toLocaleDateString('ar-SA', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            })
-        );
-
-        // تحديد مسار الإعادة
+        localStorage.setItem('userJoinDate', new Date().toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }));
+        
         const params = new URLSearchParams(window.location.search);
-        const redirectTo = params.get('redirect_to');
-        const source = params.get('source');
+        const isFromBlog = params.get('cbu') === '1';
 
-        if (source === 'blog') {
-            // إرسال البيانات إلى المدونة
+        if (isFromBlog) {
+            // المستخدم قادم من المدونة
             if (window.opener) {
                 window.opener.postMessage({
                     type: 'loginSuccess',
@@ -64,102 +44,61 @@ function handleCredentialResponse(response) {
                         image: responsePayload.picture,
                         email: responsePayload.email
                     }
-                }, 'https://mdwnplus.blogspot.com');
+                }, '*'); // استخدم '*' لضمان إرسال الرسالة لأي نطاق
             }
-            window.close();
-        } else if (redirectTo === 'account') {
-            window.location.href = 'https://modweeb.github.io/auth-login/account';
+            window.close(); // إغلاق النافذة المنبثقة
         } else {
-            window.location.href = 'https://modweeb.github.io/auth-login/login';
+            // المستخدم قادم مباشرة إلى صفحة تسجيل الدخول
+            window.location.href = 'https://modweeb.github.io/auth-login/account/';
         }
     } else {
-        console.error("بيانات المستخدم غير مكتملة");
-        alert("حدث خطأ في المصادقة. يرجى المحاولة مرة أخرى.");
+        console.error("فشل في استلام بيانات المستخدم الصالحة.");
     }
 }
 
-/**
- * تسجيل الخروج وإعادة التوجيه
- */
+// دالة تسجيل الخروج وإعادة التوجيه
 function handleLogoutAndRedirect() {
-    // مسح بيانات الجلسة
-    const keys = [
-        'userLoggedIn',
-        'userName',
-        'userEmail',
-        'userPicture',
-        'userJoinDate'
-    ];
+    localStorage.removeItem('userLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userPicture');
+    localStorage.removeItem('userJoinDate');
     
-    keys.forEach(key => localStorage.removeItem(key));
+    // عرض رسالة تأكيد
+    alert("تم تسجيل الخروج بنجاح.");
     
-    // إعادة التوجيه إلى صفحة تسجيل الدخول
-    window.location.href = 'https://modweeb.github.io/auth-login/login';
+    // إعادة التوجيه إلى الصفحة الرئيسية لمستودع GitHub
+    window.location.href = 'https://modweeb.github.io/auth-login/';
 }
 
-/**
- * تحديث واجهة معلومات الحساب
- */
+// دالة تحديث واجهة المستخدم في صفحة الحساب
 function updateAccountInfo() {
     const accountInfo = document.getElementById('accountInfo');
     if (!accountInfo) {
-        console.warn('عنصر عرض معلومات الحساب غير موجود');
+        console.error("عنصر HTML 'accountInfo' غير موجود.");
         return;
     }
 
     const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-    const userData = {
-        name: localStorage.getItem('userName'),
-        picture: localStorage.getItem('userPicture'),
-        email: localStorage.getItem('userEmail'),
-        joinDate: localStorage.getItem('userJoinDate')
-    };
+    const userName = localStorage.getItem('userName');
+    const userPicture = localStorage.getItem('userPicture');
+    const userEmail = localStorage.getItem('userEmail');
+    const userJoinDate = localStorage.getItem('userJoinDate');
 
-    if (isLoggedIn && userData.name && userData.email) {
+    if (isLoggedIn && userName && userEmail) {
         accountInfo.innerHTML = `
             <div class="flex items-center justify-center mb-4">
-                <img src="${userData.picture || 'https://via.placeholder.com/150'}" 
-                     alt="${userData.name}" 
-                     class="w-16 h-16 rounded-full"
-                     onerror="this.src='https://via.placeholder.com/150'">
+                <img src="${userPicture || 'https://via.placeholder.com/150'}" alt="${userName}" class="w-16 h-16 rounded-full">
             </div>
-            <p class="text-lg font-semibold">${userData.name}</p>
-            <p class="text-neutral-500">${userData.email}</p>
-            <p class="text-neutral-500">
-                تاريخ الانضمام: ${userData.joinDate || 'غير محدد'}
-            </p>
+            <p class="text-lg font-semibold">${userName}</p>
+            <p class="text-neutral-500">${userEmail}</p>
+            <p class="text-neutral-500">تاريخ الانضمام: ${userJoinDate || 'غير محدد'}</p>
         `;
     } else {
         accountInfo.innerHTML = `
-            <div class="text-center">
-                <p class="text-neutral-500 mb-4">لم يتم تسجيل الدخول.</p>
-                <a href="https://modweeb.github.io/auth-login/login" 
-                   class="button button-black">
-                   تسجيل الدخول
-                </a>
-            </div>
+            <p class="text-neutral-500">لم يتم تسجيل الدخول.</p>
+            <a href="https://modweeb.github.io/auth-login/login/?redirect_to=account.html" class="button button-black mt-4">تسجيل الدخول</a>
         `;
-        
-        // إذا كان في صفحة الحساب، إعادة التوجيه بعد فترة
-        if (window.location.pathname.includes('/account')) {
-            setTimeout(() => {
-                window.location.href = 'https://modweeb.github.io/auth-login/login/?redirect_to=account';
-            }, 1500);
-        }
     }
 }
 
-// دالة مساعدة للتحقق من صحة المصادقة
-function validateAuth() {
-    const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-    const requiredFields = ['userName', 'userEmail'];
-    const isValid = isLoggedIn && requiredFields.every(field => 
-        localStorage.getItem(field)
-    );
-    
-    if (!isValid && window.location.pathname.includes('/account')) {
-        window.location.href = 'https://modweeb.github.io/auth-login/login/?redirect_to=account';
-    }
-    
-    return isValid;
-}
